@@ -1,9 +1,9 @@
 version: v1.0
-name: Go
+name: Initial Pipeline
 agent:
   machine:
-    type: e1-standard-2
-    os_image: ubuntu2004
+    type: s1-ubuntu2204
+    os_image: ''
 blocks:
   - name: Install dependencies
     task:
@@ -20,30 +20,12 @@ blocks:
             - cache store
   - name: Tests
     task:
-      prologue:
-        commands:
-          - sem-version go 1.18
-          - export GO111MODULE=on
-          - export GOPATH=~/go
-          - 'export PATH=/home/semaphore/go/bin:$PATH'
-          - checkout
-          - cache restore
-          - go mod vendor
       jobs:
         - name: Unit tests
           commands:
             - go test ./...
   - name: Build
     task:
-      prologue:
-        commands:
-          - sem-version go 1.18
-          - export GO111MODULE=on
-          - export GOPATH=~/go
-          - 'export PATH=/home/semaphore/go/bin:$PATH'
-          - checkout
-          - cache restore
-          - go mod vendor
       jobs:
         - name: Build
           commands:
